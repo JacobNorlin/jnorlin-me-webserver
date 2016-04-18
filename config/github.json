@@ -1,0 +1,6 @@
+var githubOAuth = {
+	clientId: "85ddb8c0fac06439639b",
+	clientSecret: "8bf528b842ea3441c034d064a58455bb69507e2f"
+}
+
+export {githubOAuth}
