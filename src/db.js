@@ -84,4 +84,6 @@ const Repository = sequelize.define('repository', {
 	}
 })
 
+
+
 export {sequelize, Users, BlogPosts}
