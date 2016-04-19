@@ -21,6 +21,7 @@ router.post('/addUser', (req, res) => {
 })
 
 router.post('/sessions/create', function(req, res, next) {
+	console.log(req.body)
 	if(!req.body.username || !req.body.password) {
 		return res.status(400).send("Please enter both username and password.")
 	}
@@ -33,9 +34,10 @@ router.post('/sessions/create', function(req, res, next) {
 			if(user.password !== req.body.password) {
 				return res.status(401).send("Usename or password dont match")
 			}
-
 			res.status(201).send({
-				id_token: createToken(user)
+				id_token: createToken(user),
+				username: user.userName,
+				id: user.id
 
 			})
 			

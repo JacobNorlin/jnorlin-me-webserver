@@ -13,33 +13,33 @@ var jwtCheck = jwt({
   secret: config.secret
 });
 
-function parsePost(req){
-	const body = req.body.body
-	const date = req.body.date
+function parseReq(req){
+	let {user, post} = req.body
+	post = JSON.parse(post)
+	user = JSON.parse(user)
 	return {
-		body: body,
-		date: date
+		post: post,
+		user: user
 	}
 }
 
 router.use('/blog/protected', jwtCheck);
 //Fetch the user from db
-router.use('/blog/protected', (req, res, next) => {
-	if(!req.body.username){
-		return res.status(400).send("Please enter username")
-	}
-	findUser(req)
-		.then(d => {
-			let user = d.dataValues
-			req.user = user
-			next()
-		})
-})
+// router.use('/blog/protected', (req, res, next) => {
+// 	if(!req.body.username){
+// 		return res.status(400).send("Please enter username")
+// 	}
+// 	findUser(req)
+// 		.then(d => {
+// 			let user = d.dataValues
+// 			req.user = user
+// 			next()
+// 		})
+// })
 
 router.post('/blog/protected/addPost', (req, res) => {
-	const user = req.user
-	const post = parsePost(req)
-	BlogPosts.create({body: post.body, date: post.body, uid: user.id})
+	const {user, post} = parseReq(req)
+	BlogPosts.create({body: post, uid: user["id"]})
 		.then((d) => {
 			if(d){
 				res.status(201).send("Post added")	
