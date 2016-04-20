@@ -35,7 +35,7 @@ const Users = sequelize.define('users', {
 
 const BlogPosts = sequelize.define('blogposts', {
 	body: {
-		type: Sequelize.STRING,
+		type: Sequelize.TEXT,
 		field: 'body'
 	},
 	date: {
@@ -79,11 +79,18 @@ const Repository = sequelize.define('repository', {
 		}
 	},
 	body: {
-		type: Sequelize.STRING,
+		type: Sequelize.TEXT,
 		field: 'body'
 	}
 })
 
+export function syncDatabase(){
+	const cfg = {forced: true}
+	Users.sync(cfg)
+	BlogPosts.sync(cfg)
+	Repository.sync(cfg)
+}
 
 
-export {sequelize, Users, BlogPosts}
+
+export {sequelize, Users, BlogPosts, Repository}

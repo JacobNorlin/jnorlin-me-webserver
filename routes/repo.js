@@ -1,10 +1,8 @@
-"use strict"
-
 import express from 'express'
 import jwt from 'express-jwt'
 import config from '../config/jwt.json'
-import {BlogPosts} from '../src/db.js'
-import {findUser, parseReq, addOrUpdateRow} from './utils.js'
+import {Repository} from '../src/db.js'
+import {findUser} from './utils.js'
 import Rx from 'rx'
 
 const router = module.exports = express.Router()
@@ -14,21 +12,10 @@ var jwtCheck = jwt({
 });
 
 
-router.use('/blog/protected', jwtCheck);
-//Fetch the user from db
-// router.use('/blog/protected', (req, res, next) => {
-// 	if(!req.body.username){
-// 		return res.status(400).send("Please enter username")
-// 	}
-// 	findUser(req)
-// 		.then(d => {
-// 			let user = d.dataValues
-// 			req.user = user
-// 			next()
-// 		})
-// })
 
-router.post('/blog/protected/removePost', (req, res) => {
+router.use('/repo/protected', jwtCheck);
+
+router.post('/repo/protected/removeElem', (req, res) => {
 	const {user, data} = parseReq(req)
 	const {id} = data
 	BlogPosts.destroy({where:{
@@ -39,21 +26,25 @@ router.post('/blog/protected/removePost', (req, res) => {
 	})
 })
 
-router.post('/blog/protected/addPost', (req, res) => {
+router.post('/repo/protected/addElem', (req, res) => {
 	const {user, data} = parseReq(req)
-	const {body, id} = data
-	console.log(data)
+	const {type, link, body, id} = data
+
 	let row = {}
 
 	if(id > -1){
 		row = {
 			body: body,
+			type,
+			link,
 			uid: user["id"],
 			id: id
 		}
 	}else{
 		row = {
 			body: body,
+			type,
+			link,
 			uid: user["id"]
 		}
 	}
@@ -67,14 +58,13 @@ router.post('/blog/protected/addPost', (req, res) => {
 			res.status(400).send(d)
 		}
 	})
-
 })
 
-router.get('/blog/:username', (req, res) => {
+router.get('/repo/:username', (req, res) => {
 	req.body.username = req.params.username
 	Rx.Observable.fromPromise(findUser(req))
 		.flatMap(user => {
-			return Rx.Observable.fromPromise(BlogPosts.findAll({
+			return Rx.Observable.fromPromise(Repository.findAll({
 				where: {
 					uid: user.id
 				}
@@ -85,4 +75,3 @@ router.get('/blog/:username', (req, res) => {
 		})
 		
 })
-

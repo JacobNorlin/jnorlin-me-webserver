@@ -8,7 +8,8 @@ var cors = require('cors')
 
 var routes = require('./routes/users');
 import blogRoute from './routes/blog.js'
-
+import repoRoute from './routes/repo.js'
+import {syncDatabase} from './src/db.js'
 var app = express();
 
 // view engine setup
@@ -24,6 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(blogRoute)
+app.use(repoRoute)
 app.use('/', routes);
 
 // catch 404 and forward to error handler

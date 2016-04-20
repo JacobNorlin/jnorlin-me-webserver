@@ -1,7 +1,7 @@
 "use strict"
 import {Users} from '../src/db.js'
 
-function findUser(req){
+export function findUser(req){
 	let userName = req.body.username
 	return Users.findOne({
 		where: {
@@ -10,4 +10,12 @@ function findUser(req){
 	})
 }
 
-export {findUser}
+export function parseReq(req){
+	let {user, data} = req.body
+	data = JSON.parse(data)
+	user = JSON.parse(user)
+	return {
+		data,
+		user
+	}
+}
