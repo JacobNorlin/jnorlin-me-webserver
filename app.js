@@ -11,7 +11,7 @@ import blogRoute from './routes/blog.js'
 import repoRoute from './routes/repo.js'
 import {syncDatabase} from './src/db.js'
 var app = express();
-syncDatabase()
+// syncDatabase()
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

@@ -28,7 +28,7 @@ router.post('/repo/protected/removeElem', (req, res) => {
 
 router.post('/repo/protected/addElem', (req, res) => {
 	const {user, data} = parseReq(req)
-	const {type, link, summary, id, title} = data
+	const {link, summary, id, title, tags} = data
 	console.log(data)
 
 	let row = {}
@@ -37,7 +37,7 @@ router.post('/repo/protected/addElem', (req, res) => {
 		row = {
 			summary,
 			title,
-			type,
+			tags,
 			link,
 			uid: user["id"],
 			id: id
@@ -46,8 +46,8 @@ router.post('/repo/protected/addElem', (req, res) => {
 		row = {
 			summary,
 			title,
-			type,
 			link,
+			tags,
 			uid: user["id"]
 		}
 	}

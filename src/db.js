@@ -38,6 +38,14 @@ const BlogPosts = sequelize.define('blogposts', {
 		type: Sequelize.TEXT,
 		field: 'body'
 	},
+	tags: {
+		type: Sequelize.TEXT,
+		field: 'tags'
+	},
+	title: {
+		type: Sequelize.TEXT,
+		field: 'title'
+	},
 	date: {
 		type: Sequelize.DATE,
 		field: 'date'
@@ -70,6 +78,10 @@ const Repository = sequelize.define('repository', {
 		type: Sequelize.STRING,
 		field: 'link'
 	},
+	tags: {
+		type: Sequelize.TEXT,
+		field: 'tags'
+	},
 	id: {
 		type: Sequelize.INTEGER,
 		primaryKey: true,
@@ -89,9 +101,9 @@ const Repository = sequelize.define('repository', {
 })
 
 export function syncDatabase(){
-	const cfg = {forced: true}
-	Users.sync(cfg)
-	BlogPosts.sync(cfg)
+	const cfg = {force: true}
+	// Users.sync(cfg)
+	// BlogPosts.sync(cfg)
 	Repository.sync(cfg)
 }
 

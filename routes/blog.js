@@ -15,18 +15,7 @@ var jwtCheck = jwt({
 
 
 router.use('/blog/protected', jwtCheck);
-//Fetch the user from db
-// router.use('/blog/protected', (req, res, next) => {
-// 	if(!req.body.username){
-// 		return res.status(400).send("Please enter username")
-// 	}
-// 	findUser(req)
-// 		.then(d => {
-// 			let user = d.dataValues
-// 			req.user = user
-// 			next()
-// 		})
-// })
+
 
 router.post('/blog/protected/removePost', (req, res) => {
 	const {user, data} = parseReq(req)
@@ -41,19 +30,22 @@ router.post('/blog/protected/removePost', (req, res) => {
 
 router.post('/blog/protected/addPost', (req, res) => {
 	const {user, data} = parseReq(req)
-	const {body, id} = data
-	console.log(data)
+	const {body, id, tags, title} = data
 	let row = {}
 
 	if(id > -1){
 		row = {
-			body: body,
+			body,
+			id,
+			tags,
+			title,
 			uid: user["id"],
-			id: id
 		}
 	}else{
 		row = {
-			body: body,
+			body,
+			tags,
+			title,
 			uid: user["id"]
 		}
 	}
