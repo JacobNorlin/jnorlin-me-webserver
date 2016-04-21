@@ -62,6 +62,10 @@ const Repository = sequelize.define('repository', {
 		type: Sequelize.STRING,
 		field: 'type'
 	},
+	title: {
+		type: Sequelize.STRING,
+		field: 'title'
+	},
 	link: {
 		type: Sequelize.STRING,
 		field: 'link'
@@ -78,9 +82,9 @@ const Repository = sequelize.define('repository', {
 			key: 'id'
 		}
 	},
-	body: {
+	summary: {
 		type: Sequelize.TEXT,
-		field: 'body'
+		field: 'summary'
 	}
 })
 

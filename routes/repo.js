@@ -2,7 +2,7 @@ import express from 'express'
 import jwt from 'express-jwt'
 import config from '../config/jwt.json'
 import {Repository} from '../src/db.js'
-import {findUser} from './utils.js'
+import {findUser, parseReq} from './utils.js'
 import Rx from 'rx'
 
 const router = module.exports = express.Router()
@@ -18,7 +18,7 @@ router.use('/repo/protected', jwtCheck);
 router.post('/repo/protected/removeElem', (req, res) => {
 	const {user, data} = parseReq(req)
 	const {id} = data
-	BlogPosts.destroy({where:{
+	Repository.destroy({where:{
 		id: id
 	}})
 	.then(r => {
@@ -28,13 +28,15 @@ router.post('/repo/protected/removeElem', (req, res) => {
 
 router.post('/repo/protected/addElem', (req, res) => {
 	const {user, data} = parseReq(req)
-	const {type, link, body, id} = data
+	const {type, link, summary, id, title} = data
+	console.log(data)
 
 	let row = {}
 
 	if(id > -1){
 		row = {
-			body: body,
+			summary,
+			title,
 			type,
 			link,
 			uid: user["id"],
@@ -42,14 +44,15 @@ router.post('/repo/protected/addElem', (req, res) => {
 		}
 	}else{
 		row = {
-			body: body,
+			summary,
+			title,
 			type,
 			link,
 			uid: user["id"]
 		}
 	}
 
-	BlogPosts.upsert(row)
+	Repository.upsert(row)
 	.then(d => {
 		if(d){
 			res.status(201).send(d)
