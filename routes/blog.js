@@ -10,13 +10,52 @@ import Rx from 'rx'
 const router = module.exports = express.Router()
 
 var jwtCheck = jwt({
-  secret: config.secret
+	secret: config.secret
 });
 
 
 router.use('/blog/protected', jwtCheck);
 
-
+router.search('/blog/search', (req,res) => {
+	const {user, data} = parseReq(req)
+	const {tags, text} = data
+	console.log(user)
+	BlogPosts.findAll({
+		where:{
+			$or:{
+				uid: user.id,
+				$and:{
+					$or:{
+						title:{
+							$like: {
+								$any: text
+							}
+						},
+						body:{
+							$like: {
+								$any: text
+							}
+						}
+					},
+					$or:{
+						tags:{
+							$like:{
+								$any: tags
+							}
+						}
+					}
+				}
+			}
+		}	
+	})
+	.then(r => {
+		if(r){
+			res.status(200).send(r)
+		}else{
+			res.status(400).send(r)
+		}
+	})
+})
 router.post('/blog/protected/removePost', (req, res) => {
 	const {user, data} = parseReq(req)
 	const {id} = data
@@ -62,19 +101,19 @@ router.post('/blog/protected/addPost', (req, res) => {
 
 })
 
-router.get('/blog/:username', (req, res) => {
-	req.body.username = req.params.username
-	Rx.Observable.fromPromise(findUser(req))
-		.flatMap(user => {
-			return Rx.Observable.fromPromise(BlogPosts.findAll({
-				where: {
-					uid: user.id
-				}
-			}))
-		})
-		.subscribe(posts => {
-			res.status(200).send(posts)
-		})
-		
-})
+// router.get('/blog/:username', (req, res) => {
+// 	req.body.username = req.params.username
+// 	Rx.Observable.fromPromise(findUser(req))
+// 	.flatMap(user => {
+// 		return Rx.Observable.fromPromise(BlogPosts.findAll({
+// 			where: {
+// 				uid: user.id
+// 			}
+// 		}))
+// 	})
+// 	.subscribe(posts => {
+// 		res.status(200).send(posts)
+// 	})
+
+// })
 

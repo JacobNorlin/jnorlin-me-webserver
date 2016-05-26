@@ -103,8 +103,8 @@ const Repository = sequelize.define('repository', {
 export function syncDatabase(){
 	const cfg = {force: true}
 	// Users.sync(cfg)
-	// BlogPosts.sync(cfg)
-	Repository.sync(cfg)
+	BlogPosts.sync(cfg)
+	// Repository.sync(cfg)
 }
 
 

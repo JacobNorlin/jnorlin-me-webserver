@@ -9,6 +9,7 @@ var cors = require('cors')
 var routes = require('./routes/users');
 import blogRoute from './routes/blog.js'
 import repoRoute from './routes/repo.js'
+import searchRoute from './routes/search.js'
 import {syncDatabase} from './src/db.js'
 var app = express();
 // syncDatabase()
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(blogRoute)
 app.use(repoRoute)
+app.use(searchRoute)
 app.use('/', routes);
 
 // catch 404 and forward to error handler

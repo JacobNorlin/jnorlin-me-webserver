@@ -11,7 +11,7 @@ export function findUser(req){
 }
 
 export function parseReq(req){
-	let {user, data} = req.body
+	let {data, user} = req.body
 	data = JSON.parse(data)
 	user = JSON.parse(user)
 	return {
