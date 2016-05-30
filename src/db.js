@@ -6,7 +6,7 @@ import {cfg} from '../config/db.cfg';
 
 const sequelize = new Sequelize(cfg.database, cfg.user, cfg.password, {
 	host: cfg.host,
-	dialect: 'mysql',
+	dialect: 'mariadb',
 	pool:{
 		max: 5,
 		min: 0,
