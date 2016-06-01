@@ -19,3 +19,34 @@ export function parseReq(req){
 		user
 	}
 }
+
+export function postIdQuery(postId){
+	console.log(postId)
+	if(postId === 'undefined')
+		return "true"
+	else
+		return "id="+postId
+}
+
+export function userQuery(uid){
+	switch (uid) {
+		case undefined:
+			return "true"
+		default:
+			return "uid="+uid
+	}
+}
+
+export function tagQuery(tags){
+	switch (tags) {
+		case undefined:
+			return "true"
+		default:{
+			let ts = tags.split(' ').reduce((acc, t) => {
+				return acc+"|"+t
+			})
+			return "tags REGEXP '"+ts+"'"
+		}
+	}
+
+}

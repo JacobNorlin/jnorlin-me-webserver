@@ -4,7 +4,7 @@ import express from 'express'
 import jwt from 'express-jwt'
 import config from '../config/jwt.json'
 import {BlogPosts, sequelize} from '../src/db.js'
-import {findUser, parseReq, addOrUpdateRow} from './utils.js'
+import {parseReq, addOrUpdateRow, userQuery, tagQuery, postIdQuery} from './utils.js'
 import Maybe from 'data.maybe'
 
 const router = module.exports = express.Router()
@@ -24,36 +24,6 @@ function searchBlog(uid, tags, postId){
 	return sequelize.query(q)
 }
 
-function postIdQuery(postId){
-	console.log(postId)
-	if(postId === 'undefined')
-		return "true"
-	else
-		return "id="+postId
-}
-
-function userQuery(uid){
-	switch (uid) {
-		case undefined:
-			return "true"
-		default:
-			return "uid="+uid
-	}
-}
-
-function tagQuery(tags){
-	switch (tags) {
-		case undefined:
-			return "true"
-		default:{
-			let ts = tags.split(' ').reduce((acc, t) => {
-				return acc+"|"+t
-			})
-			return "tags REGEXP '"+ts+"'"
-		}
-	}
-
-}
 
 router.get('/blog/search', (req, res) => {
 	const {username="", id=0, tags, postId} = req.query
