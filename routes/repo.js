@@ -30,6 +30,7 @@ router.post('/repo/protected/addElem', (req, res) => {
 	const {user, data} = parseReq(req)
 	const {link, summary, id, title, tags} = data
 	console.log(data)
+	console.log(id)
 
 	let row = {}
 

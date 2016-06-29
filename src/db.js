@@ -33,6 +33,7 @@ const Users = sequelize.define('users', {
 		}
 })
 
+
 const BlogPosts = sequelize.define('blogposts', {
 	body: {
 		type: Sequelize.TEXT,

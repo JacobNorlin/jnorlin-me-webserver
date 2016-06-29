@@ -7,7 +7,7 @@ export function findUser(req){
 		where: {
 			userName: userName
 		}
-	})
+	})	
 }
 
 export function parseReq(req){
